@@ -57,6 +57,15 @@ type Item struct {
 	Status      int    `json:"status" db:"status"`
 }
 
+type Config struct {
+	Host     string
+	Port     string
+	Username string
+	Password string
+	DBName   string
+	SSLMode  string
+}
+
 func (m *Model) PrepareIn() {
 	m.Delivery.OrderUid = m.OrderUid
 	m.Payment.OrderUid = m.OrderUid

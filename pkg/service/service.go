@@ -2,10 +2,10 @@ package service
 
 import (
 	"fmt"
-	"github.com/IKostarev/go-wb-l0/cache"
-	"github.com/IKostarev/go-wb-l0/internal/model"
 	ctx "github.com/gorilla/context"
 	"github.com/jmoiron/sqlx"
+	"gitlab.com/IKostarev/go-wb-l0/cache"
+	"gitlab.com/IKostarev/go-wb-l0/internal/model"
 	"log"
 	"net/http"
 	"time"
@@ -94,26 +94,18 @@ func DBInit(cfg model.Config) *sqlx.DB {
 }
 
 func ModelAdd(m model.Model) error {
-	insertOrder := `INSERT INTO models 
+	insertModel := `INSERT INTO models 
 	VALUES (:order_uid, :track_number, :entry,
 	:locale, :internal_signature, :customer_id, :delivery_service,:shardkey,
 	:sm_id, :date_created, :oof_shard)`
 
-	insertDelivery := `INSERT INTO deliveries 
-	VALUES (:order_uid, :name, :phone, :zip, :city, :address, :region, :email)`
-
-	insertPayment := `INSERT INTO payments 
-	VALUES (:order_uid, :request_id, :currency, :provider, :amount,
-	:payment_dt, :bank, :delivery_cost, :goods_total, :custom_fee)`
-
-	insertItem := `INSERT INTO items 
-	VALUES (:order_uid, :chrt_id, :track_number, :price, :rid,
-	:name, :sale, :size, :total_price, :nm_id, :brand, :status)`
-
-	_, err := Db.Exec(insertOrder, m)
+	_, err := Db.Exec(insertModel, m)
 	if err != nil {
 		log.Fatalf("При добавлении %s в таблицу models произошла ошибка:%s", m.OrderUid, err)
 	}
+
+	insertDelivery := `INSERT INTO deliveries 
+	VALUES (:order_uid, :name, :phone, :zip, :city, :address, :region, :email)`
 
 	_, err = Db.Exec(insertDelivery, m)
 	if err != nil {
@@ -121,11 +113,19 @@ func ModelAdd(m model.Model) error {
 		log.Fatalf("При добавлении %s в таблицу models произошла ошибка:%s", m.OrderUid, err)
 	}
 
+	insertPayment := `INSERT INTO payments 
+	VALUES (:order_uid, :request_id, :currency, :provider, :amount,
+	:payment_dt, :bank, :delivery_cost, :goods_total, :custom_fee)`
+
 	_, err = Db.Exec(insertPayment, m)
 	if err != nil {
 		ModelRemove(m.OrderUid)
 		log.Fatalf("При добавлении %s в таблицу models произошла ошибка:%s", m.OrderUid, err)
 	}
+
+	insertItem := `INSERT INTO items 
+	VALUES (:order_uid, :chrt_id, :track_number, :price, :rid,
+	:name, :sale, :size, :total_price, :nm_id, :brand, :status)`	
 
 	for _, item := range m.Items {
 		_, err = Db.Exec(insertItem, item)
@@ -227,13 +227,13 @@ func NatsReader() time.Time {
 	err := row.Scan(&loaded)
 
 	if err != nil {
-		log.Fatalf("Невозможно закгрузить бэкап NATS, пропущенные сообщения будут проигнорированны")
+		log.Fatalf("Невозможно загрузить бэкап NATS, пропущенные сообщения будут проигнорированны")
 	}
 
 	restoredTime, err := time.Parse(time.RFC822Z, loaded)
 
 	if err != nil {
-		log.Fatalf("Невозможно закгрузить бэкап NATS, пропущенные сообщения будут проигнорированны")
+		log.Fatalf("Невозможно загрузить бэкап NATS, пропущенные сообщения будут проигнорированны")
 	}
 
 	return restoredTime

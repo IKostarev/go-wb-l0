@@ -1,8 +1,8 @@
 package cache
 
 import (
-	mdl "github.com/IKostarev/go-wb-l0/internal/model"
 	"github.com/jmoiron/sqlx"
+	mdl "gitlab.com/IKostarev/go-wb-l0/internal/model"
 	"log"
 	"time"
 )

@@ -1,4 +1,14 @@
 # Тестовое задание стажировки Wildberries
+
+## Стэк:
+- Golang
+- PostgreSQL
+- Nats-io
+- Gorilla mux && context
+- net/http
+- sqlx
+
+
 ## В сервисе:
 1. Подключение и подписка на канал в nats-streaming
 2. Полученные данные писать в Postgres

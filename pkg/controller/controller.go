@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/IKostarev/go-wb-l0/pkg/service"
 	"github.com/gorilla/mux"
+	"gitlab.com/IKostarev/go-wb-l0/pkg/service"
 	"net/http"
 )
 

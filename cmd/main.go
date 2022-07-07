@@ -2,14 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/IKostarev/go-wb-l0/cache"
-	"github.com/IKostarev/go-wb-l0/internal/model"
-	"github.com/IKostarev/go-wb-l0/pkg/controller"
-	"github.com/IKostarev/go-wb-l0/pkg/service"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/nats-io/stan.go"
+	"gitlab.com/IKostarev/go-wb-l0/cache"
+	"gitlab.com/IKostarev/go-wb-l0/internal/model"
+	"gitlab.com/IKostarev/go-wb-l0/pkg/controller"
+	"gitlab.com/IKostarev/go-wb-l0/pkg/service"
 	"log"
 	"net/http"
 	"strings"
